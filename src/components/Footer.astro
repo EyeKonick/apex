@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets';
+import site from '../data/site.json';
+import logo from '../assets/images/logo.png';
+
+const year = new Date().getFullYear();
+---
+<footer class="foot" data-reveal>
+  <div class="brand">
+    <a class="logo" href="/" aria-label={`${site.name}, home`}>
+      <Image src={logo} alt={site.logoAlt} height={46} densities={[1, 2, 3]} quality={92} />
+    </a>
+    <p class="id">{site.name}<span>{site.tagline}</span></p>
+  </div>
+  <nav class="links" aria-label="Contact">
+    <a href={`tel:${site.phone.tel}`}><svg class="ico" aria-hidden="true"><use href="#i-phone" /></svg><span class="u-line">{site.phone.display}</span></a>
+    <a href={`mailto:${site.email}`}><svg class="ico" aria-hidden="true"><use href="#i-mail" /></svg><span class="u-line">{site.email}</span></a>
+    <a href={site.facebook.url} data-placeholder={site.facebook.placeholder ? site.facebook.todo : undefined}><svg class="ico fill" aria-hidden="true"><use href="#i-fb" /></svg><span class="u-line">Facebook</span></a>
+  </nav>
+  <p class="legal">© {year} {site.name} · {site.location}</p>
+</footer>
+
+<style>
+  .foot { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px 40px; align-items: center; padding: 32px var(--gutter) 28px; border-top: 1px solid var(--rule); }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .brand .logo { height: 46px; width: auto; aspect-ratio: 559 / 299; }
+  .id { font-weight: 800; font-stretch: 112%; font-size: 14px; line-height: 1.35; text-transform: uppercase; letter-spacing: .03em; }
+  .id span { display: block; font-weight: 500; letter-spacing: .04em; color: var(--ink-soft); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px clamp(16px, 2.5vw, 32px); font-weight: 700; font-size: 15px; }
+  .links a { text-decoration: none; display: inline-flex; align-items: center; gap: .5em; min-height: 44px; }
+  .links a { transition: color var(--dur-micro) ease; }
+  .links a:hover { color: var(--blue-hi); }
+  .legal { grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-soft); }
+
+  @media (max-width: 760px) {
+    .foot { grid-template-columns: 1fr; }
+    .links { flex-direction: column; align-items: flex-start; gap: 0; }
+  }
+</style>

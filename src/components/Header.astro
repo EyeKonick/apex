@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import site from '../data/site.json';
+import logo from '../assets/images/logo.png';
+---
+<header class="head">
+  <a class="logo" href="/" aria-label={`${site.name}, home`}>
+    <Image src={logo} alt={site.logoAlt} height={60} densities={[1, 2, 3]} quality={92} loading="eager" />
+  </a>
+  <p class="id">{site.name}<span>{site.location}</span></p>
+  <nav class="nav" aria-label="Contact">
+    <a href={site.facebook.url} data-placeholder={site.facebook.placeholder ? site.facebook.todo : undefined}><svg class="ico fill" aria-hidden="true"><use href="#i-fb" /></svg><span class="u-line">Facebook</span></a>
+    <a class="mail" href={`mailto:${site.email}`}><svg class="ico" aria-hidden="true"><use href="#i-mail" /></svg><span class="u-line">Email</span></a>
+    <a class="tel" href={`tel:${site.phone.tel}`}><svg class="ico" aria-hidden="true"><use href="#i-phone" /></svg><span class="u-line">{site.phone.display}</span></a>
+  </nav>
+</header>
+
+<style>
+  .head { display: flex; align-items: center; gap: 18px; padding: 16px var(--gutter); }
+  .head .logo { height: 60px; width: auto; aspect-ratio: 559 / 299; }
+  .id { font-weight: 800; font-stretch: 112%; font-size: 14px; line-height: 1.35; text-transform: uppercase; letter-spacing: .03em; }
+  .id span { display: block; font-weight: 500; letter-spacing: .04em; color: rgba(255, 255, 255, .85); }
+  .nav { margin-left: auto; display: flex; align-items: center; gap: clamp(12px, 2vw, 26px); font-weight: 700; font-size: 15px; }
+  .nav a { text-decoration: none; display: inline-flex; align-items: center; gap: .5em; }
+  .nav a { transition: color var(--dur-micro) ease; }
+  .nav a:hover { color: var(--blue-hi); }
+  .head .logo { transition: transform var(--dur-std) var(--spring-expressive); }
+  .head .logo:hover { transform: scale(1.04); }
+  @media (max-width: 980px) {
+    .nav a.mail { display: none; }
+  }
+  @media (max-width: 560px) {
+    .head { padding: 12px 16px; gap: 12px; }
+    .head .logo { height: 44px; }
+    .id { font-size: 11px; }
+    .id span { display: none; }
+    .nav .tel { font-size: 14px; white-space: nowrap; }
+    .nav a:not(.tel) { display: none; }
+  }
+</style>

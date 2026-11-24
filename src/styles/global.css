@@ -1,0 +1,124 @@
+/* Self-hosted fonts (@fontsource): Archivo variable with its width axis, Big Shoulders Display 800. */
+@import '@fontsource-variable/archivo/wdth';
+@import '@fontsource/big-shoulders-display/800';
+
+/* ===== Tokens: logo navy, electric blue, white. Nothing else. ===== */
+:root {
+  --navy-950: #030c1e;   /* sampled from logo ground */
+  --navy-900: #071634;
+  --navy-800: #0c2250;
+  --blue: #1f5bff;       /* electric blue fill (white text 5.1:1) */
+  --blue-hi: #6f9bff;    /* electric blue as text on navy (6.9:1) */
+  --white: #ffffff;
+  --ink-soft: rgba(255, 255, 255, .74);
+  --rule: rgba(255, 255, 255, .22);
+  --navy-ink-soft: #3a4c72; /* secondary text on white, navy-tinted (8:1) */
+
+  /* Motion tokens (mirrored in src/scripts/motion.ts) */
+  --dur-micro: 150ms;    /* colour changes, press */
+  --dur-std: 300ms;      /* hovers, toggles, chat panel */
+  --dur-section: 650ms;  /* scroll reveals */
+  --dur-hero: 900ms;     /* large image reveals */
+  --spring-gentle: cubic-bezier(.22, 1, .36, 1);      /* smooth settle */
+  --spring-standard: cubic-bezier(.2, .8, .2, 1);     /* natural, UI */
+  --spring-expressive: cubic-bezier(.34, 1.32, .64, 1); /* slight overshoot, small accents only */
+  --ease-out: var(--spring-gentle);
+  --stagger-step: 80ms;
+  --stagger-max: 480ms;
+
+  --font-body: "Archivo Variable", "Archivo", system-ui, sans-serif;
+  --font-display: "Big Shoulders Display", "Archivo Variable", sans-serif;
+  --gutter: clamp(16px, 3.5vw, 48px);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scrollbar-color: var(--blue) var(--navy-950); }
+/* Native smooth scrolling only as a fallback when Lenis isn't running */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.lenis) { scroll-behavior: smooth; }
+}
+body {
+  background: var(--navy-950);
+  color: var(--white);
+  font-family: var(--font-body);
+  caret-color: var(--blue);
+  overflow-x: hidden;
+}
+::selection { background: var(--blue); color: var(--white); }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--blue-hi); outline-offset: 3px; border-radius: 2px; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--navy-950); }
+::-webkit-scrollbar-thumb { background: var(--navy-800); border: 2px solid var(--navy-950); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+[id] { scroll-margin-top: 0; }
+
+/* ===== Shared bits ===== */
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ico { width: 1.05em; height: 1.05em; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ico.fill { fill: currentColor; stroke: none; }
+.logo { display: block; flex: none; line-height: 0; }
+.logo img { width: 100%; height: 100%; object-fit: contain; }
+
+/* Poster display type, shared by the hero and section headings */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(2.4rem, 4.6vw, 4.4rem);
+  line-height: .9;
+  letter-spacing: -.01em;
+}
+.display > span { display: block; }
+.display .hi { color: var(--blue-hi); }
+/* Each heading line sits in its own mask so it can slide up into view */
+.display .ln { overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
+.display .ln > span { display: block; }
+
+/* Hover: underline draws in from the left */
+.u-line { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; padding-bottom: 2px; transition: background-size var(--dur-std) var(--spring-standard), color var(--dur-micro) ease; }
+.u-line:hover, .u-line:focus-visible { background-size: 100% 1px; }
+
+/* Hover: a fill sweeps in from the left behind the content (set --sweep for its colour) */
+.sweep { position: relative; isolation: isolate; overflow: hidden; }
+.sweep::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--sweep, var(--navy-950)); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-std) var(--spring-standard); }
+.sweep:hover::before, .sweep:focus-visible::before { transform: scaleX(1); }
+.sweep .arrow { transition: transform var(--dur-std) var(--spring-standard); }
+.sweep:hover .arrow, .sweep:focus-visible .arrow { transform: translateX(5px); }
+
+/* Duotone treatment for every photo: grayscale photo multiplied over a blue ground */
+.duotone { position: relative; overflow: hidden; margin: 0; background: linear-gradient(160deg, #163a8a, var(--navy-900) 75%); }
+.duotone img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; filter: grayscale(1) contrast(1.2) brightness(1.7); }
+
+/* ===== Scroll reveals =====
+   Hidden states apply only while the motion script runs (.js set in BaseLayout, kept by
+   .motion-ready) and motion is allowed. Keyframes use fill-mode backwards, so nothing is
+   held afterwards and hover transitions on the same element keep working. */
+[data-reveal] { --stagger: min(calc(var(--i, 0) * var(--stagger-step)), var(--stagger-max)); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Default: fade and rise */
+  .js [data-reveal]:not(.is-in) { opacity: 0; }
+  .js [data-reveal].is-in { animation: mm-rise var(--dur-section) var(--spring-gentle) backwards; animation-delay: var(--stagger); }
+
+  /* Headings: each line slides up out of its mask */
+  .js [data-reveal='lines']:not(.is-in) { opacity: 1; }
+  .js [data-reveal='lines']:not(.is-in) .ln > span { translate: 0 110%; }
+  .js [data-reveal='lines'].is-in { animation: none; }
+  .js [data-reveal='lines'].is-in .ln > span { animation: mm-line var(--dur-section) var(--spring-gentle) backwards; animation-delay: calc(var(--stagger) + var(--l, 0) * var(--stagger-step)); }
+
+  /* Images: wipe up from the bottom with a slight settle (on the img, so the frame keeps its size) */
+  .js [data-reveal='mask']:not(.is-in) { opacity: 1; }
+  .js [data-reveal='mask']:not(.is-in) img { clip-path: inset(100% 0 0 0); }
+  .js [data-reveal='mask'].is-in { animation: none; }
+  .js [data-reveal='mask'].is-in img { animation: mm-unmask var(--dur-hero) var(--spring-standard) backwards; animation-delay: var(--stagger); }
+}
+
+@keyframes mm-rise { from { opacity: 0; translate: 0 24px; } }
+@keyframes mm-line { from { translate: 0 110%; } }
+@keyframes mm-unmask { from { clip-path: inset(100% 0 0 0); scale: 1.08; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-delay: 0s !important; }
+}

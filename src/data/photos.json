@@ -1,0 +1,146 @@
+{
+  "hero": [
+    {
+      "file": "placeholders/roof-framing.jpg",
+      "alt": "Steel roof trusses during construction",
+      "placeholder": true,
+      "credit": {
+        "photographer": "D R (@dkphotos22)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/dSRhwPe6v9c"
+      }
+    },
+    {
+      "file": "placeholders/cctv-camera.jpg",
+      "alt": "CCTV cameras mounted on a dark building wall",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Ennio Dybeli (@enniodybeli)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/KDdNjUQwzSw"
+      }
+    },
+    {
+      "file": "placeholders/rooftop-solar.jpg",
+      "alt": "Solar panels installed on a house roof",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Watt A Lot (@wattalot)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/Ja8t8nJN2I4"
+      }
+    },
+    {
+      "file": "placeholders/radio-tower.jpg",
+      "alt": "Lit radio communication tower at dusk",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Benedek Dezső (@dezbenedek)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/D4R6vHZmNag"
+      }
+    },
+    {
+      "file": "placeholders/aircon-install.jpg",
+      "alt": "Aircon outdoor unit mounted on a wall bracket",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Andrianto Cahyono Putro (@andrianspace)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/ItJsBJlf5Qw"
+      }
+    },
+    {
+      "file": "placeholders/house-renovation.jpg",
+      "alt": "Two-storey house with scaffolding during renovation",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Julia Taubitz (@justmejuliee)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/J4MM8FhaMRk"
+      }
+    }
+  ],
+  "about": {
+    "file": "placeholders/house-renovation.jpg",
+    "alt": "Two-storey house with scaffolding during renovation",
+    "placeholder": true,
+    "credit": {
+      "photographer": "Julia Taubitz (@justmejuliee)",
+      "source": "Unsplash",
+      "url": "https://unsplash.com/photos/J4MM8FhaMRk"
+    }
+  },
+  "services": {
+    "structural": {
+      "file": "placeholders/structural-manila.jpg",
+      "alt": "Construction site with foundation formwork and high-rises behind, in Metro Manila",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Vee V (@8muggler)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/El4szGQjCl4"
+      }
+    },
+    "renovation": {
+      "file": "placeholders/renovation-worker.jpg",
+      "alt": "Filipino worker in a hard hat and safety vest repairing a site",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Joseph Sullan (@itzjiyo)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/eWjO2wrGW5k"
+      }
+    },
+    "roofing": {
+      "file": "placeholders/metal-roofing.jpg",
+      "alt": "Hands fastening metal roofing sheets with a tool",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Sergio Martins (@smartins20)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/E07VvBCSSNE"
+      }
+    },
+    "cctv": {
+      "file": "placeholders/cctv-install.jpg",
+      "alt": "Technician mounting a CCTV camera on a wall",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Bermix Studio (@bermixstudio)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/bAGo7O4prtY"
+      }
+    },
+    "radio": {
+      "file": "placeholders/radio-tower-ph.jpg",
+      "alt": "Telecommunication tower above a Philippine street with power lines",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Donna Mae Moltio (@supertramp_21)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/dth9J-Tluhw"
+      }
+    },
+    "aircon": {
+      "file": "placeholders/aircon-install.jpg",
+      "alt": "Aircon outdoor unit mounted on a wall bracket",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Andrianto Cahyono Putro (@andrianspace)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/ItJsBJlf5Qw"
+      }
+    },
+    "solar": {
+      "file": "placeholders/solar-install.jpg",
+      "alt": "Worker installing a solar panel on a shingled roof",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Bill Mead (@wmmead)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/wmaP3Tl80ww"
+      }
+    }
+  }
+}

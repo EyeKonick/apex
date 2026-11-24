@@ -1,0 +1,100 @@
+---
+import { Image } from 'astro:assets';
+import site from '../data/site.json';
+import services from '../data/services.json';
+import { heroPhotos } from '../lib/photos';
+
+// Collage cell layout: first and fourth photos span both rows (the fourth hides below 980px).
+const cellClass = ['a', '', '', 'd', '', ''];
+const sizes = '(max-width: 560px) 50vw, (max-width: 980px) 34vw, 30vw';
+---
+<section class="hero" aria-labelledby="hero-title" data-hero>
+  <div class="collage" aria-hidden="true" data-parallax>
+    {heroPhotos.map((photo, i) => (
+      <figure class:list={['duotone', cellClass[i]]} data-placeholder={photo.placeholder ? '' : undefined}>
+        <Image
+          src={photo.src}
+          alt=""
+          widths={[400, 640, 900, 1200]}
+          sizes={sizes}
+          format="webp"
+          quality={70}
+          loading="eager"
+          fetchpriority={i === 0 ? 'high' : 'auto'}
+        />
+      </figure>
+    ))}
+  </div>
+
+  <slot name="header" />
+
+  <div class="type">
+    <h1 id="hero-title" aria-label={site.headline.join(' ')}>
+      {site.headline.map((line) => <span class="ln"><span>{line}</span></span>)}
+    </h1>
+  </div>
+
+  <div class="foot" data-hero-bar>
+    <a class="cta sweep" href="#contact">Get a Free Quote <svg class="ico arrow" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+    <div class="tag">
+      <strong>{site.tagline}</strong>
+      <span>{services.map((s) => s.shortTitle).join(' · ')}</span>
+      <span>{site.serviceArea.label}</span>
+    </div>
+    <div class="reach">
+      <a href={`tel:${site.phone.tel}`}><svg class="ico" aria-hidden="true"><use href="#i-phone" /></svg><span class="u-line">{site.phone.display}</span></a>
+      <a href={`mailto:${site.email}`}><svg class="ico" aria-hidden="true"><use href="#i-mail" /></svg><span class="u-line">{site.email}</span></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; background: var(--navy-950); overflow: hidden; isolation: isolate; }
+  .collage { position: absolute; inset: 0; z-index: -1; will-change: translate; display: grid; grid-template-columns: 1.25fr 1fr 1fr .9fr; grid-template-rows: 1fr 1fr; gap: 3px; background: var(--navy-950); }
+  .collage .a { grid-row: 1 / 3; }
+  .collage .d { grid-row: 1 / 3; }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(0deg, rgba(3,12,30,.94) 0%, rgba(3,12,30,.5) 42%, rgba(3,12,30,.1) 70%, rgba(3,12,30,.45) 100%); }
+
+  .type { align-self: end; padding: 0 var(--gutter) clamp(18px, 3vh, 32px); }
+  h1 { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; font-size: clamp(3rem, 8.4vw, 9.5rem); line-height: .86; letter-spacing: -.01em; }
+  .ln { display: block; overflow: hidden; padding-bottom: .02em; }
+  .ln > span { display: block; }
+  .ln:nth-child(2) > span { color: var(--blue-hi); }
+
+  .foot { display: grid; grid-template-columns: auto 1fr auto; align-items: stretch; background: var(--blue); color: var(--white); }
+  .cta { display: flex; align-items: center; gap: .8em; padding: 0 clamp(18px, 3vw, 40px); min-height: 76px; background: var(--white); color: var(--navy-950); font-family: var(--font-display); font-weight: 800; font-size: clamp(1.3rem, 1.8vw, 1.7rem); text-transform: uppercase; text-decoration: none; letter-spacing: .01em; --sweep: var(--navy-950); transition: color var(--dur-std) var(--spring-standard); }
+  .cta:hover, .cta:focus-visible { color: var(--white); }
+  .tag { display: flex; flex-direction: column; justify-content: center; padding: 14px clamp(16px, 2.5vw, 32px); gap: 4px; }
+  .tag strong { font-weight: 800; font-stretch: 112%; text-transform: uppercase; letter-spacing: .04em; font-size: 15px; }
+  .tag span { font-size: 13.5px; line-height: 1.4; color: var(--white); }
+  .reach { display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 12px clamp(16px, 2.5vw, 32px); border-left: 1px solid rgba(255,255,255,.35); font-weight: 700; font-size: 15px; }
+  .reach a { text-decoration: none; display: inline-flex; align-items: center; gap: .55em; }
+
+  @media (max-width: 980px) {
+    .collage { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    .collage .d { display: none; }
+    .foot { grid-template-columns: 1fr 1fr; }
+    .cta { grid-column: 1 / -1; justify-content: space-between; }
+    .reach { border-left: 1px solid rgba(255,255,255,.35); }
+  }
+  @media (max-width: 560px) {
+    .collage { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
+    .collage .a { grid-row: auto; }
+    h1 { font-size: 11.5vw; white-space: nowrap; }
+    .foot { grid-template-columns: 1fr; }
+    .reach { border-left: 0; border-top: 1px solid rgba(255,255,255,.35); }
+  }
+
+  /* One authored entrance: the headline lines rise out of their masks on load. */
+  @media (prefers-reduced-motion: no-preference) {
+    .ln > span { animation: hero-line .9s var(--ease-out) both; }
+    .ln:nth-child(2) > span { animation-delay: .09s; }
+    .ln:nth-child(3) > span { animation-delay: .18s; }
+    @keyframes hero-line { from { transform: translateY(102%); } to { transform: none; } }
+    /* The quote bar rises in once the headline has landed */
+    .foot { animation: hero-bar var(--dur-section) var(--spring-gentle) .35s backwards; }
+    .collage { animation: hero-collage 1.4s var(--spring-gentle) backwards; }
+    @keyframes hero-bar { from { opacity: 0; transform: translateY(100%); } }
+    @keyframes hero-collage { from { opacity: 0; scale: 1.06; } }
+  }
+</style>

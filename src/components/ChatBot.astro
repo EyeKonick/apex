@@ -1,0 +1,362 @@
+---
+/**
+ * Rule-based FAQ chat. Answers come only from src/data (chatbot.json, site.json,
+ * services.json); nothing is sent to a server. Answers are compiled here at build
+ * time into plain text plus action links, and the client script only matches and renders.
+ */
+import site from '../data/site.json';
+import services from '../data/services.json';
+import bot from '../data/chatbot.json';
+
+type Link = { href: string; label: string; closes?: boolean };
+type Answer = { text: string; links: Link[] };
+
+const vars: Record<string, string> = {
+  phone: site.phone.display,
+  email: site.email,
+  serviceList: services
+    .map((s) => s.title)
+    .reduce((acc, t, i, all) => (i === 0 ? t : i === all.length - 1 ? `${acc}, and ${t}` : `${acc}, ${t}`), ''),
+};
+
+const linkFor: Record<string, Link> = {
+  quote: { href: '#contact', label: 'Get a free quote', closes: true },
+  tel: { href: `tel:${site.phone.tel}`, label: `Call ${site.phone.display}` },
+  email: { href: `mailto:${site.email}?subject=${encodeURIComponent(site.quoteEmailSubject)}`, label: 'Email us' },
+  facebook: { href: site.facebook.url, label: 'Message on Facebook' },
+};
+
+function compile(template: string, extra: Record<string, string> = {}): Answer {
+  const all = { ...vars, ...extra };
+  const links: Link[] = [];
+  const text = template
+    .replace(/\[\[(\w+)\]\]/g, (_, key: string) => {
+      if (linkFor[key]) links.push(linkFor[key]);
+      return '';
+    })
+    .replace(/\{(\w+)\}/g, (_, key: string) => all[key] ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return { text, links };
+}
+
+const serviceKeywords = bot.serviceKeywords as Record<string, string[]>;
+const intents = [
+  ...bot.intents.map((it) => ({ id: it.id, weight: it.weight, keywords: it.keywords, ...compile(it.answer) })),
+  ...services.map((s) => ({
+    id: `service-${s.id}`,
+    title: s.title,
+    weight: bot.serviceWeight,
+    keywords: serviceKeywords[s.id] ?? [],
+    ...compile(bot.serviceAnswer, { title: s.title, description: s.description }),
+  })),
+];
+
+const data = {
+  greeting: compile(bot.greeting),
+  fallback: compile(bot.fallback),
+  suggestions: bot.suggestions,
+  mentionServiceIn: bot.serviceMentionIntents,
+  intents,
+};
+---
+<div class="chat" data-chat>
+  <button class="launcher" type="button" aria-label={`${bot.launcherLabel}: chat with ${bot.name}`} aria-expanded="false" aria-controls="chat-panel" data-chat-toggle data-magnetic>
+    <span class="launcher-icon" aria-hidden="true">
+      <svg class="ico i-open"><use href="#i-chat" /></svg>
+      <svg class="ico i-shut"><use href="#i-close" /></svg>
+    </span>
+    <span class="launcher-label">{bot.launcherLabel}</span>
+  </button>
+
+  <section class="panel" id="chat-panel" role="dialog" aria-modal="false" aria-labelledby="chat-title" hidden data-chat-panel>
+    <header class="panel-head">
+      <div>
+        <h2 id="chat-title">{bot.name}</h2>
+        <p><span class="dot" aria-hidden="true"></span>{bot.status}</p>
+      </div>
+      <button class="close" type="button" aria-label="Close chat" data-chat-close>
+        <svg class="ico" aria-hidden="true"><use href="#i-close" /></svg>
+      </button>
+    </header>
+
+    <div class="log" role="log" aria-live="polite" aria-relevant="additions" data-chat-log data-lenis-prevent></div>
+
+    <form class="composer" data-chat-form>
+      <label class="vh" for="chat-input">Your question</label>
+      <input id="chat-input" name="q" type="text" autocomplete="off" maxlength="200" placeholder={bot.placeholder} enterkeyhint="send" required />
+      <button class="send" type="submit" aria-label="Send">
+        <svg class="ico" aria-hidden="true"><use href="#i-arrow" /></svg>
+      </button>
+    </form>
+  </section>
+
+  <script type="application/json" data-chat-data set:html={JSON.stringify(data)} />
+</div>
+
+<script>
+  import { onScroll, reduceMotion } from '../scripts/motion';
+
+  type Link = { href: string; label: string; closes?: boolean };
+  type Answer = { text: string; links: Link[] };
+  type Intent = Answer & { id: string; weight: number; keywords: string[]; title?: string };
+  type ChatData = { greeting: Answer; fallback: Answer; suggestions: string[]; mentionServiceIn: string[]; intents: Intent[] };
+
+  const root = document.querySelector<HTMLElement>('[data-chat]');
+  const dataEl = root?.querySelector('[data-chat-data]');
+  if (root && dataEl) {
+    const data: ChatData = JSON.parse(dataEl.textContent || '{}');
+    const toggle = root.querySelector<HTMLButtonElement>('[data-chat-toggle]')!;
+    const panel = root.querySelector<HTMLElement>('[data-chat-panel]')!;
+    const closeBtn = root.querySelector<HTMLButtonElement>('[data-chat-close]')!;
+    const log = root.querySelector<HTMLElement>('[data-chat-log]')!;
+    const form = root.querySelector<HTMLFormElement>('[data-chat-form]')!;
+    const input = form.querySelector<HTMLInputElement>('input')!;
+    const PANEL_MS = reduceMotion ? 0 : 320; // matches the panel's closing transition
+    let started = false;
+    let busy = false;
+    let closeTimer = 0;
+
+    const norm = (s: string) =>
+      ` ${s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()} `;
+    const intents = data.intents.map((it) => ({ ...it, keys: it.keywords.map(norm) }));
+
+    // Weight decides; more keyword hits breaks ties; then the earlier intent.
+    // A price or quote answer names the service when the question mentions one.
+    function answerFor(question: string): Answer {
+      const q = norm(question);
+      const hits = intents
+        .map((it) => ({ it, n: it.keys.filter((k) => q.includes(k)).length }))
+        .filter((h) => h.n > 0);
+      if (!hits.length) return data.fallback;
+      const rank = (h: { it: Intent; n: number }) => h.it.weight * 100 + h.n;
+      const pick = (list: typeof hits) => list.reduce((x, y) => (rank(y) > rank(x) ? y : x)).it;
+      const best = pick(hits);
+      const services = hits.filter((h) => h.it.title);
+      const service = services.length ? pick(services) : undefined;
+      if (service && data.mentionServiceIn.includes(best.id)) {
+        const text = `For ${service.title}, ${best.text.charAt(0).toLowerCase()}${best.text.slice(1)}`;
+        return { text, links: best.links };
+      }
+      return best;
+    }
+
+    function scrollDown() {
+      log.scrollTo({ top: log.scrollHeight, behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+
+    function addMessage(from: 'bot' | 'user', text: string, links: Link[] = []) {
+      const msg = document.createElement('div');
+      msg.className = `msg ${from}`;
+      const p = document.createElement('p');
+      p.textContent = text;
+      msg.append(p);
+      if (links.length) {
+        const row = document.createElement('div');
+        row.className = 'actions';
+        links.forEach((l, i) => {
+          const a = document.createElement('a');
+          a.href = l.href;
+          a.textContent = l.label;
+          a.style.setProperty('--i', String(i));
+          if (l.closes) a.addEventListener('click', () => setOpen(false, false));
+          row.append(a);
+        });
+        msg.append(row);
+      }
+      log.append(msg);
+      scrollDown();
+    }
+
+    // "Typing" bubble with three dots, removed when the answer lands.
+    function showTyping() {
+      const t = document.createElement('div');
+      t.className = 'msg bot typing';
+      t.setAttribute('aria-hidden', 'true');
+      const p = document.createElement('p');
+      p.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
+      t.append(p);
+      log.append(t);
+      scrollDown();
+      return t;
+    }
+
+    function addSuggestions() {
+      const row = document.createElement('div');
+      row.className = 'suggest';
+      data.suggestions.forEach((s, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = s;
+        b.style.setProperty('--i', String(i));
+        b.addEventListener('click', () => ask(s));
+        row.append(b);
+      });
+      log.append(row);
+      scrollDown();
+    }
+
+    function removeSuggestions() {
+      const row = log.querySelector<HTMLElement>('.suggest');
+      if (!row) return;
+      if (reduceMotion) {
+        row.remove();
+        return;
+      }
+      row.classList.add('leaving');
+      window.setTimeout(() => row.remove(), 200);
+    }
+
+    function ask(question: string) {
+      const q = question.trim();
+      if (!q || busy) return;
+      busy = true;
+      removeSuggestions();
+      addMessage('user', q);
+      const a = answerFor(q);
+      // A short, length-aware pause reads as "typing" without feeling slow.
+      const wait = reduceMotion ? 0 : Math.min(450 + a.text.length * 4, 1100);
+      const typing = reduceMotion ? null : showTyping();
+      window.setTimeout(() => {
+        typing?.remove();
+        addMessage('bot', a.text, a.links);
+        if (a === data.fallback) addSuggestions();
+        busy = false;
+      }, wait);
+    }
+
+    function setOpen(open: boolean, restoreFocus = true) {
+      window.clearTimeout(closeTimer);
+      toggle.setAttribute('aria-expanded', String(open));
+      root!.classList.toggle('open', open);
+      if (open) {
+        panel.hidden = false;
+        // Two frames, so the transition starts from the closed state.
+        requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('is-open')));
+        if (!started) {
+          started = true;
+          addMessage('bot', data.greeting.text, data.greeting.links);
+          addSuggestions();
+        }
+        input.focus({ preventScroll: true });
+      } else {
+        panel.classList.remove('is-open');
+        closeTimer = window.setTimeout(() => (panel.hidden = true), PANEL_MS);
+        if (restoreFocus) toggle.focus({ preventScroll: true });
+      }
+    }
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    closeBtn.addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') setOpen(false);
+    });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      ask(input.value);
+      input.value = '';
+    });
+
+    // Keep the launcher clear of the hero's contact bar while that bar is at the bottom of the screen.
+    const heroBar = document.querySelector<HTMLElement>('[data-hero-bar]');
+    if (heroBar) {
+      onScroll(() => {
+        const r = heroBar.getBoundingClientRect();
+        const vh = window.innerHeight;
+        // Phones: the bar's right side is empty, so the launcher stays in the corner.
+        const covers = window.innerWidth > 560 && r.top < vh - 12 && r.bottom > vh - 80;
+        root!.style.setProperty('--chat-lift', covers ? `${Math.round(vh - r.top) + 12}px` : '16px');
+      });
+    }
+  }
+</script>
+
+<style>
+  .chat { --chat-lift: 16px; position: fixed; right: 16px; bottom: var(--chat-lift); z-index: 60; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; transition: bottom var(--dur-section) var(--spring-gentle); pointer-events: none; }
+  .chat > * { pointer-events: auto; }
+
+  /* Launcher: icon morphs chat <-> close, colour eases, leans toward the pointer (data-magnetic) */
+  .launcher { display: inline-flex; align-items: center; gap: .55em; min-height: 52px; padding: 0 20px 0 16px; border: 0; cursor: pointer; background: var(--blue); color: var(--white); font: 700 15px/1 var(--font-body); box-shadow: 0 10px 24px -10px rgba(0, 0, 0, .6); transition: background-color var(--dur-std) var(--spring-standard), box-shadow var(--dur-std) var(--spring-standard), scale var(--dur-micro) var(--spring-standard); }
+  .launcher:hover { background: #0f47e6; box-shadow: 0 16px 30px -12px rgba(0, 0, 0, .7); }
+  .launcher:active { scale: .96; }
+  .open .launcher { background: var(--navy-800); }
+  .launcher-icon { position: relative; width: 22px; height: 22px; }
+  .launcher-icon .ico { position: absolute; inset: 0; width: 22px; height: 22px; transition: opacity var(--dur-std) var(--spring-standard), transform var(--dur-std) var(--spring-expressive); }
+  .launcher-icon .i-shut { opacity: 0; transform: rotate(-90deg) scale(.6); }
+  .open .launcher-icon .i-open { opacity: 0; transform: rotate(90deg) scale(.6); }
+  .open .launcher-icon .i-shut { opacity: 1; transform: none; }
+
+  /* Panel: grows out of the launcher's corner, softly un-blurring */
+  .panel { width: min(380px, calc(100vw - 32px)); height: min(560px, calc(100svh - var(--chat-lift) - 96px)); display: flex; flex-direction: column; background: var(--navy-900); border: 1px solid rgba(255, 255, 255, .14); box-shadow: 0 24px 48px -20px rgba(0, 0, 0, .7); order: -1;
+    transform-origin: bottom right; opacity: 0; transform: translateY(16px) scale(.94); filter: blur(4px);
+    transition: opacity var(--dur-std) var(--spring-standard), transform var(--dur-std) var(--spring-standard), filter var(--dur-std) var(--spring-standard); }
+  .panel.is-open { opacity: 1; transform: none; filter: none; transition-duration: var(--dur-section), var(--dur-section), var(--dur-std); transition-timing-function: var(--spring-gentle); }
+  .panel[hidden] { display: none; }
+
+  .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 12px 14px 18px; border-bottom: 1px solid var(--rule); }
+  .panel-head h2 { font-size: 15px; font-weight: 750; font-stretch: 108%; }
+  .panel-head p { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue-hi); }
+  .close { width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: none; color: var(--white); cursor: pointer; transition: background-color var(--dur-micro) ease; }
+  .close .ico { width: 20px; height: 20px; transition: transform var(--dur-std) var(--spring-expressive); }
+  .close:hover { background: var(--navy-800); }
+  .close:hover .ico { transform: rotate(90deg); }
+
+  .log { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--navy-800) transparent; }
+  .log :global(.msg) { max-width: 88%; }
+  .log :global(.msg p) { font-size: 14.5px; line-height: 1.5; padding: 10px 13px; }
+  .log :global(.msg.bot) { align-self: flex-start; transform-origin: bottom left; }
+  .log :global(.msg.bot p) { background: var(--navy-800); }
+  .log :global(.msg.user) { align-self: flex-end; transform-origin: bottom right; }
+  .log :global(.msg.user p) { background: var(--blue); }
+
+  /* Action and suggestion buttons share the site's fill sweep */
+  .log :global(.actions) { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .log :global(.actions a) { position: relative; isolation: isolate; overflow: hidden; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; background: var(--white); color: var(--navy-950); font-size: 13.5px; font-weight: 700; text-decoration: none; transition: color var(--dur-std) var(--spring-standard); }
+  .log :global(.actions a::before) { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-std) var(--spring-standard); }
+  .log :global(.actions a:hover), .log :global(.actions a:focus-visible) { color: var(--white); }
+  .log :global(.actions a:hover::before), .log :global(.actions a:focus-visible::before) { transform: scaleX(1); }
+
+  .log :global(.suggest) { display: flex; flex-wrap: wrap; gap: 6px; transition: opacity 200ms ease, transform 200ms ease; }
+  .log :global(.suggest.leaving) { opacity: 0; transform: translateY(6px); }
+  .log :global(.suggest button) { position: relative; isolation: isolate; overflow: hidden; min-height: 36px; padding: 0 12px; border: 1px solid rgba(111, 155, 255, .55); background: none; color: var(--white); font: 600 13.5px/1.2 var(--font-body); cursor: pointer; text-align: left; transition: border-color var(--dur-std) var(--spring-standard); }
+  .log :global(.suggest button::before) { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-std) var(--spring-standard); }
+  .log :global(.suggest button:hover), .log :global(.suggest button:focus-visible) { border-color: var(--blue); }
+  .log :global(.suggest button:hover::before), .log :global(.suggest button:focus-visible::before) { transform: scaleX(1); }
+
+  /* Typing indicator */
+  .log :global(.typing p) { display: flex; gap: 5px; align-items: center; height: 41px; padding: 0 15px; }
+  .log :global(.typing span) { width: 7px; height: 7px; border-radius: 50%; background: var(--blue-hi); opacity: .4; }
+
+  .composer { display: flex; border-top: 1px solid var(--rule); }
+  .composer input { flex: 1; min-width: 0; height: 52px; padding: 0 16px; border: 0; background: var(--navy-950); color: var(--white); font: 500 16px/1 var(--font-body); transition: box-shadow var(--dur-std) var(--spring-standard); }
+  .composer input::placeholder { color: rgba(255, 255, 255, .6); }
+  .composer input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--blue-hi); }
+  .send { width: 52px; height: 52px; display: grid; place-items: center; border: 0; background: var(--blue); color: var(--white); cursor: pointer; transition: background-color var(--dur-micro) ease; }
+  .send .ico { width: 20px; height: 20px; transition: transform var(--dur-std) var(--spring-expressive); }
+  .send:hover { background: #0f47e6; }
+  .send:hover .ico { transform: translateX(3px); }
+  .send:active .ico { transform: translateX(6px); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .log :global(.msg) { animation: chat-in var(--dur-section) var(--spring-gentle) backwards; }
+    .log :global(.msg.user) { animation-name: chat-in-user; }
+    .log :global(.actions a), .log :global(.suggest button) { animation: chat-chip var(--dur-section) var(--spring-gentle) backwards; animation-delay: calc(120ms + var(--i, 0) * 60ms); }
+    .log :global(.typing span) { animation: chat-dot 1s var(--spring-standard) infinite; }
+    .log :global(.typing span:nth-child(2)) { animation-delay: .15s; }
+    .log :global(.typing span:nth-child(3)) { animation-delay: .3s; }
+    .dot { animation: chat-pulse 2.4s ease-out infinite; }
+    @keyframes chat-in { from { opacity: 0; transform: translateY(10px) scale(.96); } }
+    @keyframes chat-in-user { from { opacity: 0; transform: translateX(14px) scale(.96); } }
+    @keyframes chat-chip { from { opacity: 0; transform: translateY(8px); } }
+    @keyframes chat-dot { 0%, 60%, 100% { opacity: .35; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-4px); } }
+    @keyframes chat-pulse { 0% { box-shadow: 0 0 0 0 rgba(111, 155, 255, .55); } 70%, 100% { box-shadow: 0 0 0 7px rgba(111, 155, 255, 0); } }
+  }
+
+  @media (max-width: 560px) {
+    .chat { right: 12px; left: 12px; }
+    .launcher { align-self: flex-end; padding: 0 16px; width: 52px; justify-content: center; }
+    .launcher-label { display: none; }
+    .panel { width: 100%; }
+  }
+</style>

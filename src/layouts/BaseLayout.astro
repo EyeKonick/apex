@@ -1,0 +1,110 @@
+---
+import { getImage } from 'astro:assets';
+import '../styles/global.css';
+import site from '../data/site.json';
+import services from '../data/services.json';
+import logo from '../assets/images/logo.png';
+
+const siteUrl = Astro.site ?? new URL(site.url);
+const canonical = new URL(Astro.url.pathname, siteUrl).href;
+const ogImage = new URL(site.seo.ogImage, siteUrl).href;
+const logoImage = await getImage({ src: logo, format: 'jpg', background: '#030c1e', width: 559 });
+const logoUrl = new URL(logoImage.src, siteUrl).href;
+
+// schema.org LocalBusiness (HomeAndConstructionBusiness). Only facts the owner has supplied:
+// no street address, opening hours, rating or price range.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  '@id': `${siteUrl.href.replace(/\/$/, '')}/#business`,
+  name: site.name,
+  slogan: site.tagline,
+  description: site.seo.description,
+  url: siteUrl.href,
+  logo: logoUrl,
+  image: ogImage,
+  telephone: site.phone.tel,
+  email: site.email,
+  areaServed: site.serviceArea.places.map((p) =>
+    p.containedIn
+      ? { '@type': p.type, name: p.name, containedInPlace: { '@type': 'AdministrativeArea', name: p.containedIn } }
+      : { '@type': p.type, name: p.name },
+  ),
+  ...(site.facebook.placeholder ? {} : { sameAs: [site.facebook.url] }),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Services',
+    itemListElement: services.map((s) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: s.title, description: s.description },
+    })),
+  },
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{site.seo.title}</title>
+    <meta name="description" content={site.seo.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#030c1e" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={site.seo.locale} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={site.seo.title} />
+    <meta property="og:description" content={site.seo.description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={site.seo.ogImageAlt} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={site.seo.title} />
+    <meta name="twitter:description" content={site.seo.description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={site.seo.ogImageAlt} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Motion fail-safe: reveal states apply only under .js. If the motion script hasn't
+         started within 2.5s (blocked, failed to load), drop .js so everything shows. -->
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        root.classList.add('js');
+        setTimeout(function () {
+          if (!root.classList.contains('motion-ready')) root.classList.remove('js');
+        }, 2500);
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Icon sprite: one stroke weight, referenced by id, e.g. #i-phone -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h3.5l1.8 4.6-2.3 1.4a11 11 0 0 0 6 6l1.4-2.3L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16.5 16.5 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4Z"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m3.5 6 8.5 7 8.5-7"/></symbol>
+      <symbol id="i-fb" viewBox="0 0 24 24"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4a21 21 0 0 0-2.4-.1c-2.4 0-4 1.4-4 4.1v2.1H7.7v3h2.6V21h3.2Z"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H9.5L5 19.5V16H4Z"/><path d="M8 9.5h8M8 12.5h5"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+      <symbol id="i-beam" viewBox="0 0 24 24"><path d="M4 4.5h16M4 19.5h16M12 4.5v15M7 4.5v2M17 4.5v2M7 17.5v2M17 17.5v2"/></symbol>
+      <symbol id="i-house" viewBox="0 0 24 24"><path d="M3.5 11 12 4l8.5 7M5.5 9.5V20h13V9.5M10 20v-5.5h4V20"/></symbol>
+      <symbol id="i-roof" viewBox="0 0 24 24"><path d="M2.5 16 12 6.5l9.5 9.5M5 16h14M8.5 16 12 10l3.5 6M12 10v6"/></symbol>
+      <symbol id="i-cctv" viewBox="0 0 24 24"><path d="M3.2 7.6 16.6 4l1.6 5.8-13.4 3.6ZM8.6 12.4l.9 3.1H5V20M18.3 8.4l2.6-.7"/></symbol>
+      <symbol id="i-radio" viewBox="0 0 24 24"><path d="M12 10v11M8.6 21 12 10l3.4 11M9.7 17.5h4.6M7.6 5.4a6.4 6.4 0 0 0 0 7.2M16.4 5.4a6.4 6.4 0 0 1 0 7.2M9.9 7.3a3.3 3.3 0 0 0 0 3.4M14.1 7.3a3.3 3.3 0 0 1 0 3.4"/><circle cx="12" cy="9" r="1"/></symbol>
+      <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.5 4.5 12 6.5l2.5-2M9.5 19.5 12 17.5l2.5 2M4.6 10.4l3-.7-.9-3M19.4 13.6l-3 .7.9 3M4.6 13.6l3 .7-.9 3M19.4 10.4l-3-.7.9-3"/></symbol>
+      <symbol id="i-solar" viewBox="0 0 24 24"><path d="M5.5 10h13l2 9h-17ZM4.4 14.5h15.2M10 10l-.6 9M14 10l.6 9M12 3v2.5M7 4.6l1.3 1.8M17 4.6l-1.3 1.8"/></symbol>
+    </svg>
+    <slot />
+    <script>
+      import '../scripts/motion';
+    </script>
+  </body>
+</html>

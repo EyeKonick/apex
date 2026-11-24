@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import site from '../data/site.json';
+import { aboutPhoto } from '../lib/photos';
+
+const { heading, body } = site.sections.about;
+---
+<section class="about" id="about" aria-labelledby="about-title">
+  <div class="copy">
+    <h2 class="display" id="about-title" data-reveal="lines">
+      <span class="ln" style="--l:0"><span>{heading[0]}</span></span>
+      <span class="ln" style="--l:1"><span class="hi">{heading[1]}</span></span>
+    </h2>
+    {body.map((p, i) => <p data-reveal style={`--i:${i + 2}`}>{p}</p>)}
+    <p class="tagline" data-reveal style="--i:4">{site.tagline}</p>
+  </div>
+  <figure class="media" data-reveal="mask" data-placeholder={aboutPhoto.placeholder ? '' : undefined}>
+    <Image
+      src={aboutPhoto.src}
+      alt={aboutPhoto.alt}
+      widths={[480, 800, 1200, 1600]}
+      sizes="(max-width: 900px) 100vw, 50vw"
+      format="webp"
+      quality={72}
+    />
+  </figure>
+</section>
+
+<style>
+  .about { margin-top: clamp(72px, 12vh, 140px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--white); color: var(--navy-950); }
+  .about :focus-visible { outline-color: var(--blue); }
+  .copy { padding: clamp(56px, 10vh, 120px) var(--gutter); display: flex; flex-direction: column; justify-content: center; }
+  h2 { margin-bottom: clamp(28px, 4vh, 44px); }
+  h2 .hi { color: var(--blue); }
+  .copy p { font-size: clamp(1.05rem, 1.3vw, 1.18rem); line-height: 1.6; color: var(--navy-ink-soft); max-width: 52ch; }
+  .copy p + p { margin-top: 14px; }
+  .copy .tagline { margin-top: clamp(28px, 4vh, 40px); padding-top: 18px; border-top: 2px solid var(--navy-950); color: var(--navy-950); font-weight: 800; font-stretch: 112%; text-transform: uppercase; letter-spacing: .04em; font-size: 15px; }
+  .media { position: relative; overflow: hidden; margin: 0; min-height: 420px; background: var(--navy-800); }
+  .media :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05) brightness(.95); transition: filter var(--dur-section) var(--spring-gentle), transform var(--dur-hero) var(--spring-gentle); }
+  .media:hover :global(img) { filter: none; transform: scale(1.03); }
+
+  @media (max-width: 900px) {
+    .about { grid-template-columns: 1fr; }
+    .media { min-height: 0; height: 62vw; }
+  }
+</style>

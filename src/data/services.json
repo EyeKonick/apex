@@ -1,0 +1,51 @@
+[
+  {
+    "id": "structural",
+    "title": "Structural Engineering",
+    "shortTitle": "Structural Engineering",
+    "description": "Steel framing and structural works.",
+    "icon": "beam"
+  },
+  {
+    "id": "renovation",
+    "title": "House Renovation",
+    "shortTitle": "House Renovation",
+    "description": "Repairs, extensions and finishing.",
+    "icon": "house"
+  },
+  {
+    "id": "roofing",
+    "title": "Roofing",
+    "shortTitle": "Roofing",
+    "description": "Metal roofing, trusses and leak repair.",
+    "icon": "roof"
+  },
+  {
+    "id": "cctv",
+    "title": "CCTV Installation & Maintenance",
+    "shortTitle": "CCTV & Maintenance",
+    "description": "Cameras, NVR setup and upkeep.",
+    "icon": "cctv"
+  },
+  {
+    "id": "radio",
+    "title": "Radio Communication Installation",
+    "shortTitle": "Radio Communication",
+    "description": "Radio and antenna installation.",
+    "icon": "radio"
+  },
+  {
+    "id": "aircon",
+    "title": "Ref & Aircon Repair, Cleaning & Installation",
+    "shortTitle": "Ref & Aircon",
+    "description": "Refrigerator and aircon repair, cleaning and installation.",
+    "icon": "snow"
+  },
+  {
+    "id": "solar",
+    "title": "Solar Panel Installation",
+    "shortTitle": "Solar Panel",
+    "description": "Rooftop solar panel installation.",
+    "icon": "solar"
+  }
+]

@@ -1,0 +1,51 @@
+{
+  "name": "APEX Integrated Technical Services",
+  "url": "https://apex-its.pages.dev",
+  "urlIsPlaceholder": true,
+  "logoAlt": "AP3X logo",
+  "location": "San Pedro City, Laguna",
+  "tagline": "Integrated Solutions. Reliable Results.",
+  "headline": ["We build.", "We refurbish.", "We maintain."],
+  "phone": {
+    "display": "0906 239 4726",
+    "tel": "+639062394726"
+  },
+  "email": "ApexIntegratedTS@gmail.com",
+  "quoteEmailSubject": "Free site inspection & quote request",
+  "facebook": {
+    "url": "https://www.facebook.com/",
+    "placeholder": true,
+    "todo": "Replace with the real APEX Facebook page URL, then set placeholder to false"
+  },
+  "serviceArea": {
+    "label": "Serving San Pedro City, Laguna and nearby Calabarzon",
+    "places": [
+      { "type": "City", "name": "San Pedro City", "containedIn": "Laguna" },
+      { "type": "AdministrativeArea", "name": "Calabarzon" }
+    ]
+  },
+  "seo": {
+    "title": "APEX Integrated Technical Services | San Pedro City, Laguna",
+    "description": "Structural engineering, house renovation, roofing, CCTV, radio, aircon and solar installation in San Pedro City and nearby Calabarzon. One local team. Free site inspection and quote.",
+    "ogImage": "/og.jpg",
+    "ogImageAlt": "APEX Integrated Technical Services: Integrated Solutions. Reliable Results.",
+    "locale": "en_PH"
+  },
+  "sections": {
+    "services": {
+      "heading": ["Seven trades.", "One team."],
+      "lede": "Structural work, renovation, roofing, CCTV, radio, aircon and solar, handled by one local team. You don't need to coordinate several contractors."
+    },
+    "about": {
+      "heading": ["One call gets you", "every trade."],
+      "body": [
+        "APEX Integrated Technical Services is a multi-trade technical and refurbishing contractor based in San Pedro City, Laguna.",
+        "We work on site in homes and small businesses around San Pedro City and nearby Calabarzon. Tell us what needs doing and the same team inspects it, quotes it and does the work."
+      ]
+    },
+    "contact": {
+      "heading": ["Get a free", "quote."],
+      "body": "Tell us what needs doing. We'll set a free site inspection and quote. Call, email or message us on Facebook, whichever is easiest."
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "repeating-stripes-gradient",
+        "value": "*",
+        "files": [
+          "bakeoff.html"
+        ],
+        "createdAt": "2026-11-24T15:21:16.988Z",
+        "reason": "Claude: V1 is the brief-pinned 'Blueprint Industrial' direction; the 48px drafting grid is that world's material, not decorative stripes"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "bakeoff.html"
+        ],
+        "createdAt": "2026-11-24T15:28:25.928Z",
+        "reason": "finish reviewer: remaining hits (section, v2-index, v3-foot, .reach) are full-bleed containers whose children carry 16-40px padding; the one real case (v1-spec li) was fixed"
+      }
+    ]
+  }
+}

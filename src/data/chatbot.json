@@ -1,0 +1,290 @@
+{
+  "name": "APEX Assistant",
+  "status": "Automated answers about APEX",
+  "launcherLabel": "Ask us",
+  "placeholder": "Type a question…",
+  "greeting": "Hi! I'm the APEX assistant. Ask me about our services, where we work, or how to get a free quote.",
+  "suggestions": [
+    "What services do you offer?",
+    "Where do you work?",
+    "How much does it cost?",
+    "How do I get a free quote?",
+    "How can I contact you?"
+  ],
+  "fallback": "Sorry, I can only answer simple questions about APEX. For anything else, call or text {phone}, email us, or message us on Facebook. [[tel]] [[email]] [[facebook]]",
+  "intents": [
+    {
+      "id": "price",
+      "weight": 3,
+      "keywords": [
+        "price",
+        "prices",
+        "pricing",
+        "cost",
+        "costs",
+        "how much",
+        "rate",
+        "rates",
+        "fee",
+        "fees",
+        "budget",
+        "estimate",
+        "magkano",
+        "presyo",
+        "bayad",
+        "halaga"
+      ],
+      "answer": "Every job is different, so we price it after a free site inspection. The inspection and the quote cost nothing. [[quote]] [[tel]]"
+    },
+    {
+      "id": "quote",
+      "weight": 2,
+      "keywords": [
+        "quote",
+        "quotation",
+        "inspection",
+        "inspect",
+        "book",
+        "booking",
+        "appointment",
+        "visit",
+        "site visit",
+        "request",
+        "pa-quote",
+        "paquote",
+        "patingin",
+        "pasilip"
+      ],
+      "answer": "Getting a quote is free. Tell us what needs doing by phone, email or Facebook, and we'll set a free site inspection and quote. [[quote]] [[tel]] [[facebook]]"
+    },
+    {
+      "id": "contact",
+      "weight": 2,
+      "keywords": [
+        "contact",
+        "phone",
+        "number",
+        "mobile",
+        "call",
+        "text",
+        "sms",
+        "email",
+        "e-mail",
+        "gmail",
+        "facebook",
+        "fb",
+        "messenger",
+        "message",
+        "reach",
+        "numero",
+        "tawag",
+        "tumawag",
+        "itext"
+      ],
+      "answer": "Call or text {phone}, email {email}, or message us on Facebook. [[tel]] [[email]] [[facebook]]"
+    },
+    {
+      "id": "hours",
+      "weight": 2,
+      "keywords": [
+        "hours",
+        "open",
+        "opening",
+        "available",
+        "availability",
+        "weekend",
+        "weekends",
+        "saturday",
+        "sunday",
+        "holiday",
+        "today",
+        "tomorrow",
+        "oras",
+        "bukas"
+      ],
+      "answer": "To check availability, call or text {phone} or message us on Facebook, and we'll confirm a time for your site inspection. [[tel]] [[facebook]]"
+    },
+    {
+      "id": "area",
+      "weight": 2,
+      "keywords": [
+        "where",
+        "area",
+        "areas",
+        "location",
+        "located",
+        "address",
+        "serve",
+        "service area",
+        "cover",
+        "near",
+        "nearby",
+        "san pedro",
+        "laguna",
+        "calabarzon",
+        "binan",
+        "santa rosa",
+        "sta rosa",
+        "cabuyao",
+        "calamba",
+        "cavite",
+        "batangas",
+        "rizal",
+        "quezon",
+        "saan",
+        "lugar",
+        "malapit"
+      ],
+      "answer": "We're based in San Pedro City, Laguna, and we serve San Pedro City and nearby Calabarzon. Not sure we cover your area? Call or text {phone} and we'll tell you. [[tel]]"
+    },
+    {
+      "id": "services",
+      "weight": 1,
+      "keywords": [
+        "service",
+        "services",
+        "offer",
+        "offers",
+        "do you do",
+        "what do you",
+        "can you",
+        "trades",
+        "work",
+        "serbisyo",
+        "trabaho",
+        "ginagawa"
+      ],
+      "answer": "One local team handles {serviceList}. Ask me about any of them, or get a free quote. [[quote]]"
+    },
+    {
+      "id": "thanks",
+      "weight": 1,
+      "keywords": [
+        "thanks",
+        "thank you",
+        "ty",
+        "salamat",
+        "maraming salamat"
+      ],
+      "answer": "You're welcome! If you need anything else, call or text {phone}. [[tel]]"
+    },
+    {
+      "id": "greeting",
+      "weight": 1,
+      "keywords": [
+        "hi",
+        "hello",
+        "hey",
+        "good morning",
+        "good afternoon",
+        "good evening",
+        "kumusta",
+        "kamusta",
+        "musta",
+        "magandang umaga",
+        "magandang hapon",
+        "magandang gabi"
+      ],
+      "answer": "Hello! How can I help? You can ask about our services, where we work, or getting a free quote."
+    }
+  ],
+  "serviceWeight": 2,
+  "serviceAnswer": "Yes, we do {title}. {description} We'll inspect the site and quote it for free. [[quote]] [[tel]]",
+  "serviceKeywords": {
+    "structural": [
+      "structural",
+      "structure",
+      "steel",
+      "framing",
+      "frame",
+      "truss",
+      "trusses",
+      "beam",
+      "beams",
+      "engineering",
+      "engineer",
+      "welding",
+      "weld",
+      "bakal"
+    ],
+    "renovation": [
+      "renovation",
+      "renovate",
+      "renovating",
+      "remodel",
+      "remodeling",
+      "extension",
+      "finishing",
+      "house",
+      "home",
+      "bahay",
+      "ayos",
+      "paayos",
+      "pagawa",
+      "gawa"
+    ],
+    "roofing": [
+      "roof",
+      "roofs",
+      "roofing",
+      "leak",
+      "leaks",
+      "leaking",
+      "gutter",
+      "bubong",
+      "yero",
+      "tulo",
+      "tumutulo"
+    ],
+    "cctv": [
+      "cctv",
+      "camera",
+      "cameras",
+      "security",
+      "nvr",
+      "dvr",
+      "surveillance"
+    ],
+    "radio": [
+      "radio",
+      "radios",
+      "antenna",
+      "antennas",
+      "two-way",
+      "two way",
+      "walkie",
+      "walkie talkie",
+      "repeater",
+      "communication"
+    ],
+    "aircon": [
+      "aircon",
+      "air con",
+      "ac",
+      "a c",
+      "air conditioner",
+      "air conditioning",
+      "ref",
+      "refrigerator",
+      "fridge",
+      "freezer",
+      "cleaning",
+      "cooling",
+      "split type",
+      "window type"
+    ],
+    "solar": [
+      "solar",
+      "panel",
+      "panels",
+      "inverter",
+      "battery",
+      "net metering",
+      "renewable"
+    ]
+  },
+  "serviceMentionIntents": [
+    "price",
+    "quote"
+  ]
+}

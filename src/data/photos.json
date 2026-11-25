@@ -142,5 +142,57 @@
         "url": "https://unsplash.com/photos/wmaP3Tl80ww"
       }
     }
+  },
+  "work": {
+    "roof-framing": {
+      "file": "placeholders/finished-metal-roof.jpg",
+      "alt": "Finished home with a black standing-seam metal roof",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Andrea Davis (@andreaedavis)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/ZsIfbVtJoDE"
+      }
+    },
+    "renovation": {
+      "file": "placeholders/finished-renovation.jpg",
+      "alt": "Renovated two-storey house with a new roof, fresh siding and a wraparound porch",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Roger Starnes Sr (@rstar50)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/oDP_ubUtkSM"
+      }
+    },
+    "cctv": {
+      "file": "placeholders/cctv-camera.jpg",
+      "alt": "CCTV cameras installed on a building corner",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Ennio Dybeli (@enniodybeli)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/KDdNjUQwzSw"
+      }
+    },
+    "solar": {
+      "file": "placeholders/rooftop-solar.jpg",
+      "alt": "Completed rooftop solar array on a house",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Watt A Lot (@wattalot)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/Ja8t8nJN2I4"
+      }
+    },
+    "radio": {
+      "file": "placeholders/radio-tower.jpg",
+      "alt": "Completed radio mast with antennas at dusk",
+      "placeholder": true,
+      "credit": {
+        "photographer": "Benedek Dezső (@dezbenedek)",
+        "source": "Unsplash",
+        "url": "https://unsplash.com/photos/D4R6vHZmNag"
+      }
+    }
   }
 }

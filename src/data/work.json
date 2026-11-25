@@ -1,0 +1,56 @@
+{
+  "heading": [
+    "Work on site,",
+    "not on paper."
+  ],
+  "lede": "Completed jobs, each one inspected, quoted and built by the same APEX crew from start to finish.",
+  "projects": [
+    {
+      "id": "roof-framing",
+      "title": "Steel roof framing and metal roofing for a family home",
+      "trades": [
+        "Structural",
+        "Roofing"
+      ],
+      "location": "San Pedro City, Laguna",
+      "scope": "Steel trusses, purlins and standing-seam metal roofing, sealed and handed over leak-free."
+    },
+    {
+      "id": "renovation",
+      "title": "Whole-house renovation",
+      "trades": [
+        "Renovation"
+      ],
+      "location": "Biñan, Laguna",
+      "scope": "Wall repairs, new siding and finishes, a re-roof and a rebuilt front porch."
+    },
+    {
+      "id": "cctv",
+      "title": "CCTV and NVR setup for a shop front",
+      "trades": [
+        "CCTV"
+      ],
+      "location": "San Pedro City, Laguna",
+      "scope": "Outdoor cameras, cabling and phone viewing."
+    },
+    {
+      "id": "solar",
+      "title": "Rooftop solar install",
+      "trades": [
+        "Solar",
+        "Roofing"
+      ],
+      "location": "Santa Rosa, Laguna",
+      "scope": "Panel mounting, roof sealing and inverter hookup."
+    },
+    {
+      "id": "radio",
+      "title": "Radio base station and mast",
+      "trades": [
+        "Radio"
+      ],
+      "location": "Carmona, Cavite",
+      "scope": "Antenna mast, grounding and base radio setup."
+    }
+  ]
+}

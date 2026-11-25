@@ -37,3 +37,8 @@ export const aboutPhoto = resolvePhoto(photos.about as Photo);
 export const servicePhotos: Record<string, ResolvedPhoto> = Object.fromEntries(
   Object.entries(photos.services as Record<string, Photo>).map(([id, p]) => [id, resolvePhoto(p)]),
 );
+
+/** One photo per project, keyed by the project's `id` in work.json. */
+export const workPhotos: Record<string, ResolvedPhoto> = Object.fromEntries(
+  Object.entries(photos.work as Record<string, Photo>).map(([id, p]) => [id, resolvePhoto(p)]),
+);

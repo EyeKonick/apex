@@ -30,7 +30,7 @@ Work happens on site in residential neighbourhoods around San Pedro City (Laguna
 
 - Primary CTA: "Get a Free Quote" (free site inspection + quote).
 - Secondary: call 0906 239 4726, email ApexIntegratedTS@gmail.com, message on Facebook. The Facebook URL isn't decided yet, so the link is a placeholder.
-- Scope: single home page (hero, services, about, contact, footer) in the Bold Poster direction.
+- Scope: single home page (hero, services, about, work, testimonials, contact, footer) in the Bold Poster direction.
 
 ## Brand Commitments
 
@@ -44,6 +44,7 @@ Work happens on site in residential neighbourhoods around San Pedro City (Laguna
 
 - Real project photos exist in `images/` (steel roof framing, CCTV install, NVR setup in San Pedro City). They carry watermarks and GPS overlays and aren't used yet, by owner decision. Unsplash placeholders, stored locally in `src/assets/images/placeholders/` and credited in `src/data/photos.json`, stand in for now.
 - There are no stats, awards, client names, testimonials, licences or years-in-business figures. Never fabricate any.
+- Owner-approved exception (2026-11-25): for the proposal, the Work and Testimonials sections use clearly labelled sample content (`src/data/work.json`, `src/data/testimonials.json`, `placeholder: true` shows a "Sample" note). Replace with real jobs and client feedback, then set `placeholder` to false.
 
 ## Product Principles
 

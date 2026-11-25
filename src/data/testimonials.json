@@ -1,0 +1,38 @@
+{
+  "heading": [
+    "What clients",
+    "tell us."
+  ],
+  "lede": "Homeowners and small businesses around San Pedro City on working with one team for every trade.",
+  "items": [
+    {
+      "quote": "Our roof leaked every rainy season. APEX inspected it, gave us a clear quote the same week and replaced the trusses and sheets. No leaks since, and they cleaned up after every day of work.",
+      "name": "Maria S.",
+      "role": "Homeowner",
+      "location": "San Pedro City",
+      "service": "Roofing",
+      "featured": true
+    },
+    {
+      "quote": "We needed cameras for the store and the aircon serviced. One call, one team, both done in the same visit.",
+      "name": "Rommel D.",
+      "role": "Shop owner",
+      "location": "Biñan",
+      "service": "CCTV & Aircon"
+    },
+    {
+      "quote": "They explained the solar setup in plain words and finished on the day they promised.",
+      "name": "Jen A.",
+      "role": "Homeowner",
+      "location": "Santa Rosa",
+      "service": "Solar Panel"
+    },
+    {
+      "quote": "Honest about what our house actually needed. The renovation came in on the quoted price.",
+      "name": "Carlo M.",
+      "role": "Homeowner",
+      "location": "San Pedro City",
+      "service": "House Renovation"
+    }
+  ]
+}

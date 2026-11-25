@@ -13,8 +13,8 @@
   "email": "ApexIntegratedTS@gmail.com",
   "quoteEmailSubject": "Free site inspection & quote request",
   "facebook": {
-    "url": "https://www.facebook.com/",
-    "placeholder": true,
+    "url": "https://www.facebook.com/profile.php?id=61590704951568",
+    "placeholder": false,
     "todo": "Replace with the real APEX Facebook page URL, then set placeholder to false"
   },
   "serviceArea": {

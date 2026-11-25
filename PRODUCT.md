@@ -29,7 +29,7 @@ Work happens on site in residential neighbourhoods around San Pedro City (Laguna
 ## Capabilities and Constraints
 
 - Primary CTA: "Get a Free Quote" (free site inspection + quote).
-- Secondary: call 0906 239 4726, email ApexIntegratedTS@gmail.com, message on Facebook. The Facebook URL isn't decided yet, so the link is a placeholder.
+- Secondary: call 0906 239 4726, email ApexIntegratedTS@gmail.com, message on Facebook (`https://www.facebook.com/profile.php?id=61590704951568`).
 - Scope: single home page (hero, services, about, work, testimonials, contact, footer) in the Bold Poster direction.
 
 ## Brand Commitments

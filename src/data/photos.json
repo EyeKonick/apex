@@ -2,47 +2,27 @@
   "hero": [
     {
       "file": "placeholders/roof-framing.jpg",
-      "alt": "Steel roof trusses during construction",
-      "placeholder": true,
-      "credit": {
-        "photographer": "D R (@dkphotos22)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/dSRhwPe6v9c"
-      }
+      "alt": "Filipino steelworker framing galvanized steel roof trusses on a concrete house",
+      "placeholder": true
     },
     {
       "file": "placeholders/cctv-camera.jpg",
-      "alt": "CCTV cameras mounted on a dark building wall",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Ennio Dybeli (@enniodybeli)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/KDdNjUQwzSw"
-      }
+      "alt": "Outdoor bullet and dome CCTV cameras mounted on a concrete shopfront corner",
+      "placeholder": true
     },
     {
       "file": "placeholders/rooftop-solar.jpg",
-      "alt": "Solar panels installed on a house roof",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Watt A Lot (@wattalot)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/Ja8t8nJN2I4"
-      }
+      "alt": "Solar panel array installed on the metal roof of a two-storey concrete house",
+      "placeholder": true
     },
     {
       "file": "placeholders/radio-tower.jpg",
-      "alt": "Lit radio communication tower at dusk",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Benedek Dezső (@dezbenedek)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/D4R6vHZmNag"
-      }
+      "alt": "Guyed VHF/UHF radio antenna mast on a concrete rooftop at dusk",
+      "placeholder": true
     },
     {
       "file": "placeholders/aircon-install.jpg",
-      "alt": "Aircon outdoor unit mounted on a wall bracket",
+      "alt": "Aircon outdoor unit mounted on a wall bracket under a metal roof",
       "placeholder": true,
       "credit": {
         "photographer": "Andrianto Cahyono Putro (@andrianspace)",
@@ -52,24 +32,14 @@
     },
     {
       "file": "placeholders/house-renovation.jpg",
-      "alt": "Two-storey house with scaffolding during renovation",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Julia Taubitz (@justmejuliee)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/J4MM8FhaMRk"
-      }
+      "alt": "Workers on steel scaffolding plastering and painting a two-storey concrete house",
+      "placeholder": true
     }
   ],
   "about": {
     "file": "placeholders/house-renovation.jpg",
-    "alt": "Two-storey house with scaffolding during renovation",
-    "placeholder": true,
-    "credit": {
-      "photographer": "Julia Taubitz (@justmejuliee)",
-      "source": "Unsplash",
-      "url": "https://unsplash.com/photos/J4MM8FhaMRk"
-    }
+    "alt": "Workers on steel scaffolding plastering and painting a two-storey concrete house",
+    "placeholder": true
   },
   "services": {
     "structural": {
@@ -94,23 +64,13 @@
     },
     "roofing": {
       "file": "placeholders/metal-roofing.jpg",
-      "alt": "Hands fastening metal roofing sheets with a tool",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Sergio Martins (@smartins20)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/E07VvBCSSNE"
-      }
+      "alt": "Roofer in a hard hat fastening rib-type metal roofing sheets onto steel purlins",
+      "placeholder": true
     },
     "cctv": {
       "file": "placeholders/cctv-install.jpg",
-      "alt": "Technician mounting a CCTV camera on a wall",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Bermix Studio (@bermixstudio)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/bAGo7O4prtY"
-      }
+      "alt": "Technician on a ladder mounting an outdoor CCTV camera under a shophouse eave",
+      "placeholder": true
     },
     "radio": {
       "file": "placeholders/radio-tower-ph.jpg",
@@ -124,7 +84,7 @@
     },
     "aircon": {
       "file": "placeholders/aircon-install.jpg",
-      "alt": "Aircon outdoor unit mounted on a wall bracket",
+      "alt": "Aircon outdoor unit mounted on a wall bracket under a metal roof",
       "placeholder": true,
       "credit": {
         "photographer": "Andrianto Cahyono Putro (@andrianspace)",
@@ -134,65 +94,35 @@
     },
     "solar": {
       "file": "placeholders/solar-install.jpg",
-      "alt": "Worker installing a solar panel on a shingled roof",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Bill Mead (@wmmead)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/wmaP3Tl80ww"
-      }
+      "alt": "Technicians in hard hats installing solar panels on a residential metal roof",
+      "placeholder": true
     }
   },
   "work": {
     "roof-framing": {
       "file": "placeholders/finished-metal-roof.jpg",
-      "alt": "Finished home with a black standing-seam metal roof",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Andrea Davis (@andreaedavis)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/ZsIfbVtJoDE"
-      }
+      "alt": "Completed two-storey family home with a dark standing-seam metal roof and gated carport",
+      "placeholder": true
     },
     "renovation": {
       "file": "placeholders/finished-renovation.jpg",
-      "alt": "Renovated two-storey house with a new roof, fresh siding and a wraparound porch",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Roger Starnes Sr (@rstar50)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/oDP_ubUtkSM"
-      }
+      "alt": "Renovated two-storey concrete house with fresh paint, a balcony, metal roof and covered porch",
+      "placeholder": true
     },
     "cctv": {
       "file": "placeholders/cctv-camera.jpg",
-      "alt": "CCTV cameras installed on a building corner",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Ennio Dybeli (@enniodybeli)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/KDdNjUQwzSw"
-      }
+      "alt": "Outdoor bullet and dome CCTV cameras installed on a concrete shopfront corner",
+      "placeholder": true
     },
     "solar": {
       "file": "placeholders/rooftop-solar.jpg",
-      "alt": "Completed rooftop solar array on a house",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Watt A Lot (@wattalot)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/Ja8t8nJN2I4"
-      }
+      "alt": "Completed rooftop solar panel array on a two-storey concrete house",
+      "placeholder": true
     },
     "radio": {
       "file": "placeholders/radio-tower.jpg",
-      "alt": "Completed radio mast with antennas at dusk",
-      "placeholder": true,
-      "credit": {
-        "photographer": "Benedek Dezső (@dezbenedek)",
-        "source": "Unsplash",
-        "url": "https://unsplash.com/photos/D4R6vHZmNag"
-      }
+      "alt": "Completed rooftop VHF/UHF radio antenna mast above a neighborhood at dusk",
+      "placeholder": true
     }
   }
 }
